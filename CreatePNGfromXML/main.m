@@ -6,16 +6,7 @@ close all
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [file, folder] = uigetfile('*.XML'); %Choose an XML file
-
-mkdir('../xli_decode/', 'Risultati');
 filename = file(1:end-4);
-mkdir('Risultati', filename);
-
-finalpath = ['../xli_decode/Risultati/' filename];
-
-filexml = strcat(folder,file);
-copyfile(filexml,finalpath)
-copyfile(filexml,pwd)
 
 
 % Handles some directory structure pecularities in some systems
@@ -31,7 +22,14 @@ slashcheck = strcmp(folder(end),dirdemarc);
 if slashcheck == 0
     folder = [folder dirdemarc];
 end
+if isempty(fslash)==1
+    saveXMLpath = '..\Data\DataXML\';
+else
+    saveXMLpath = '../Data/DataXML/';
+end
 
+filexml = strcat(folder,file);
+copyfile(filexml,pwd)
 
 % Read xml and decode leads pre-processing info
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -67,8 +65,8 @@ labels = ["I", "II","III","aVR","aVL","aVF", "V1", "V2", "V3", "V4", "V5", "V6"]
 
 plot12leads(pos,leads_mm,time_factor,labels)
 
-fig_name = [filename '_preproc.png'];
-exportgraphics(sigplot_pp, fullfile(finalpath,fig_name),'Resolution',600);
+% figname = [filename '_preproc.png'];
+% exportgraphics(sigplot_pp, fullfile(finalpath,figname),'Resolution',600);
 
 % Processing
 
@@ -124,8 +122,13 @@ labels = ["I", "II","III","aVR","aVL","aVF", "V1", "V2", "V3", "V4", "V5", "V6"]
 
 plot12leads(pos,leads,time_factor,labels)
 
-fig_name = [filename '.png'];
-exportgraphics(sigplot, fullfile(finalpath,fig_name),'Resolution',600);
+if isempty(fslash)==1
+    savePNGpath = '..\Data\DataPNG\';
+else
+    savePNGpath = '../Data/DataPNG/';
+end
+figname = [filename '.png'];
+exportgraphics(sigplot, fullfile(savePNGpath,figname),'Resolution',600);
 
 
 % %%
@@ -136,22 +139,11 @@ exportgraphics(sigplot, fullfile(finalpath,fig_name),'Resolution',600);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % [savefile,savefolder] = uiputfile('*.csv');
 
-
-% Handles some directory structure pecularities in some systems
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-fslash = strfind(finalpath,'/');
-if isempty(fslash) == 1
-    dirdemarc = '\';
+if isempty(fslash)==1
+    saveCSVpath = '..\Data\DataCSV\';
 else
-    dirdemarc = '/';
+    saveCSVpath = '../Data/DataCSV/';
 end
-
-slashcheck = strcmp(finalpath(end),dirdemarc);
-if slashcheck == 0
-    finalpath = [finalpath dirdemarc];
-end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-savefile = [finalpath filename '.csv'];
+savefile = [saveCSVpath filename '.csv'];
 writematrix(leads,savefile);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
