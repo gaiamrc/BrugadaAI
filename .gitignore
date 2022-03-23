@@ -159,3 +159,8 @@ codegen/
 
 # Octave session info
 octave-workspace
+
+# XML, CSV, PNG files
+*.xml
+*.csv
+*.png
