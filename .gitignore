@@ -164,3 +164,6 @@ octave-workspace
 *.xml
 *.csv
 *.png
+
+# DS_Store
+.DS_Store
